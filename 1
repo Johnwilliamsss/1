@@ -1,0 +1,121 @@
+// Deploying this bytecode will create a simple coin contract
+
+// The storage layout for this contract:
+// storage[0] - mapping(address => uint256) balances
+// storage[1] - totalSupply
+
+// Function signatures:
+// 0x70a08231 - balanceOf(address)
+// 0x18160ddd - mint(uint256)
+// 0xa9059cbb - transfer(address,uint256)
+
+PUSH1 0x80 // Push 0x80 (the start of the free memory)
+MSTORE // Store the start of free memory
+PUSH1 0x40 // Push 0x40 (the length of the data to store)
+CALLDATASIZE // Get size of input data
+ISZERO // Check if input data size is zero
+PUSH2 0x00F // Jump destination (revert if no input data)
+JUMPI // Jump if input data size is zero
+CALLDATALOAD // Load the first 32 bytes of input data
+PUSH1 0x00 // Push 0x00 (function signature length)
+PUSH4 0x70a08231 // Push 0x70a08231 (function signature for balanceOf(address))
+SWAP1 // Swap the top two stack values
+PUSH1 0x04 // Push 0x04 (length of function signature)
+ADD // Add function signature length to input data
+SWAP1 // Swap the top two stack values
+CALL // Call balanceOf function
+PUSH1 0x20 // Push 0x20 (length of storage slot)
+MLOAD // Load the value from the storage slot
+PUSH1 0x00 // Push 0x00
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+ADD // Add balance to the value from the storage slot
+SWAP1 // Swap the top two stack values
+PUSH1 0x20 // Push 0x20
+SWAP1 // Swap the top two stack values
+RETURN // Return the result
+
+// Function to mint coins
+// Arguments: uint256 _amount
+// storage[0] - mapping(address => uint256) balances
+// storage[1] - totalSupply
+// storage[2] - address owner
+// storage[3] - uint256 _amount
+// storage[4] - address
+// storage[5] - uint256
+// storage[6] - uint256
+// storage[7] - uint256
+PUSH1 0x40 // Push 0x40 (the length of the data to store)
+MLOAD // Load the length of the data to store
+CALLDATALOAD // Load the first 32 bytes of input data
+PUSH1 0x00 // Push 0x00
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the length of the data to store to the top of the stack
+SWAP1 // Swap the top two stack values
+POP // Pop the length of the data to store
+PUSH1 0x20 // Push 0x20 (length of storage slot)
+MLOAD // Load the value from the storage slot
+PUSH1 0x00 // Push 0x00
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+ADD // Add balance to the value from the storage slot
+SWAP1 // Swap the top two stack values
+PUSH1 0x20 // Push 0x20
+SWAP1 // Swap the top two stack values
+SWAP3 // Move the length of the data to store to the top of the stack
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+POP // Pop the length of the data to store
+SWAP1 // Swap the top two stack values
+MSTORE // Store the value in memory
+PUSH1 0x20 // Push 0x20 (length of storage slot)
+PUSH1 0x00 // Push 0x00
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+SWAP3 // Move the length of the data to store to the top of the stack
+SWAP2 // Move the value from memory to the top of the stack
+SWAP1 // Swap the top two stack values
+SSTORE // Store the value in the storage slot
+PUSH1 0x01 // Push 0x01 (length of storage slot)
+PUSH1 0x00 // Push 0x00
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+PUSH1 0x20 // Push 0x20
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the length of the data to store to the top of the stack
+SWAP1 // Swap the top two stack values
+ADD // Add totalSupply to the value from the storage slot
+SWAP1 // Swap the top two stack values
+PUSH1 0x20 // Push 0x20
+SWAP1 // Swap the top two stack values
+SWAP3 // Move the length of the data to store to the top of the stack
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+POP // Pop the length of the data to store
+SWAP1 // Swap the top two stack values
+MSTORE // Store the value in memory
+PUSH1 0x20 // Push 0x20 (length of storage slot)
+PUSH1 0x01 // Push 0x01
+SWAP1 // Swap the top two stack values
+SWAP2 // Move the value from the storage slot to the top of the stack
+SWAP1 // Swap the top two stack values
+SWAP3 // Move the length of the data to store to the top of the stack
+SWAP2 // Move the value from memory to the top of the stack
+SWAP1 // Swap the top two stack values
+SSTORE // Store the value in the storage slot
+PUSH1 0x00 // Push 0x00
+PUSH1 0x00 // Push 0x00
+RETURN // Return
+
+// Function to transfer coins
+// Arguments: address _to, uint256 _amount
+// storage[0] - mapping(address => uint256) balances
+// storage[1] - totalSupply
+// storage[2] - address owner
+// storage[3] - uint256 _amount
+// storage[4] - address _to
+// storage
